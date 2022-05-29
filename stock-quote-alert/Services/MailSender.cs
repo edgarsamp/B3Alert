@@ -9,14 +9,6 @@ namespace stock_quote_alert.Services {
         public MailSender(MailConfig config) {
             _config = config;
         }
-
-        public void teste() {
-            Console.WriteLine(_config.Sender);
-            Console.WriteLine(_config.SenderPassword);
-            Console.WriteLine(_config.Receiver);
-            Console.WriteLine(_config.Host);
-            Console.WriteLine(_config.Port);
-        }
         public async Task SendAsync(string subject, string message) {
             try {
                 MailMessage mail = new(_config.Sender, _config.Receiver, subject, message);
@@ -27,8 +19,6 @@ namespace stock_quote_alert.Services {
                     EnableSsl = true
                 };
                 await client.SendMailAsync(mail);
-
-
             } catch (Exception ex) {
                 throw ex;
             }

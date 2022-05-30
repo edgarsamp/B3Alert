@@ -20,7 +20,7 @@ namespace stock_quote_alert.Config {
 
             if (!mailConfig.IsValid())
                 throw new Exception("Config file is not valid.");
-
+           
             return mailConfig;
         }
     }

@@ -1,6 +1,6 @@
 {
-  "Receiver": "teste@gmail.com",
-  "Sender": "teste2@gmail.com",
+  "Receiver": "receiver@gmail.com",
+  "Sender": "sender@gmail.com",
   "SenderPassword": "123",
   "Host": "smtp.gmail.com",
   "Port": 587

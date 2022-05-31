@@ -16,11 +16,9 @@ namespace stock_quote_alert.Config {
             string jsonString = r.ReadToEnd();
             var mailConfig = JsonConvert.DeserializeObject<MailConfig>(jsonString);
 
-            Console.WriteLine(jsonString);
-
             if (!mailConfig.IsValid())
                 throw new Exception("Config file is not valid.");
-           
+
             return mailConfig;
         }
     }

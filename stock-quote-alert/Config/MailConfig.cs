@@ -1,6 +1,4 @@
 ﻿
-using System.Net.Mail;
-
 namespace stock_quote_alert.Config {
     internal class MailConfig {
         public string Receiver { get; set; }

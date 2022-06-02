@@ -17,7 +17,7 @@ public class StockQuoteAlert {
         _mailConfig = ConfigFile.Config.MailConfig;
         _reportConfig = ConfigFile.Config.ReportConfig;
         _stockHistory = new(_reportConfig.MaxQueueSize);
-        _delayToRequest = TimeSpan.FromMinutes(ConfigFile.Config.DelayToRequest);
+        _delayToRequest = TimeSpan.FromMinutes(Math.Max(1, ConfigFile.Config.DelayToRequest));
         _mailSenderService = new MailSender(_mailConfig);
         _monitoredStock = new MonitoredStock(args);
     }

@@ -13,11 +13,13 @@ public class ConfigFile {
 
         StreamReader r = new(path);
         string jsonString = r.ReadToEnd();
-        var config = JsonConvert.DeserializeObject<GeneralConfig>(jsonString);
-
-        if (!config.MailConfig.IsValid())
+        try {
+            var config = JsonConvert.DeserializeObject<GeneralConfig>(jsonString);
+            if (!config.MailConfig.IsValid())
+                throw new Exception("Config file is not valid.");
+            _config = config;
+        } catch (Exception ex) {
             throw new Exception("Config file is not valid.");
-
-        _config = config;
+        }
     }
 }

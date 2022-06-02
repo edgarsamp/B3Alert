@@ -2,7 +2,7 @@
   "profiles": {
     "stock-quote-alert": {
       "commandName": "Project",
-      "commandLineArgs": "PETR4 19,94 19,84\r\n"
+      "commandLineArgs": "PETR4 29,80 29,85\r\n"
     }
   }
 }

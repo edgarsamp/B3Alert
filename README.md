@@ -30,7 +30,7 @@ O programa fica continuamente monitorando a cotação do ativo enquanto estiver 
 
 Em outras palavras, dada a cotação de PETR4 abaixo.
 
-<img src="cotacaoPETR4.png">
+<img src="cotacaoPETR4.JPG">
 
 Toda vez que o preço for maior que linha-azul, um e-mail deve ser disparado aconselhando a venda.
 Toda vez que o preço for menor que linha-vermelha, um e-mail deve ser disparado aconselhando a compra.

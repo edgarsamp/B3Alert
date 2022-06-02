@@ -2,7 +2,6 @@
 
 namespace stock_quote_alert.Stocks {
     internal class MonitoredStock : Stock {
-
         public double SellPrice { get; set; }
         public double BuyPrice { get; set; }
 

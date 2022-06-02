@@ -10,16 +10,15 @@ namespace stock_quote_alert.Config {
             _path = path;
         }
 
-        public MailConfig LoadMailConfig() {
-
+        public GeneralConfig LoadConfig() {
             StreamReader r = new(_path);
             string jsonString = r.ReadToEnd();
-            var mailConfig = JsonConvert.DeserializeObject<MailConfig>(jsonString);
+            var config = JsonConvert.DeserializeObject<GeneralConfig>(jsonString);
 
-            if (!mailConfig.IsValid())
+            if (!config.MailConfig.IsValid())
                 throw new Exception("Config file is not valid.");
 
-            return mailConfig;
+            return config;
         }
     }
 }

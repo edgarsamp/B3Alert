@@ -22,7 +22,7 @@ namespace stock_quote_alert.Services {
 
 
                 var data = JsonConvert.DeserializeObject<ApiResult>(response.Content.ReadAsStringAsync().Result);
-                return new CurrentStock(stock.Name, data.results[0].longName, data.results[0].regularMarketPrice);
+                return new CurrentStock(stock.Name, data.results[0].longName, data.results[0].regularMarketPrice, data.results[0].regularMarketTime); ;
             }
         }
     }

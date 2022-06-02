@@ -18,7 +18,7 @@ public class ConfigFile {
             if (!config.MailConfig.IsValid())
                 throw new Exception("Config file is not valid.");
             _config = config;
-        } catch (Exception ex) {
+        } catch {
             throw new Exception("Config file is not valid.");
         }
     }

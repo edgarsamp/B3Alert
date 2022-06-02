@@ -1,0 +1,14 @@
+{
+  "MailConfig": {
+    "Receiver": "Receiver@hotmail.com",
+    "Sender": "Sender@hotmail.com",
+    "SenderPassword": "",
+    "Host": "",
+    "Port": 587
+  },
+  "DelayToRequest": 1,
+  "ReportConfig": {
+    "CanSendReportEmail":,
+    "MaxQueueSize": 50
+  }
+}

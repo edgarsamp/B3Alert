@@ -11,7 +11,7 @@ public class StockQuoteAlert {
     private readonly TimeSpan _delayToRequest;
     private readonly StockHistory _stockHistory;
     public StockQuoteAlert(string[] args) {
-        if (args.Length != 3) throw new Exception("Parameters is not valid.");
+        if (args.Length < 3) throw new Exception("Parameters is not valid.");
 
         _apiConsumerService = new ApiConsumer();
         _mailConfig = ConfigFile.Config.MailConfig;

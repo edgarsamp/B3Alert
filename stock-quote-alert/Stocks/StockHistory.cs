@@ -2,7 +2,6 @@
     internal class StockHistory {
         private int _maxSize;
         public Queue<CurrentStock> history;
-
         public StockHistory(int maxSize) {
             _maxSize = Math.Max(10, maxSize);
             history = new Queue<CurrentStock>();
@@ -12,7 +11,6 @@
             if (history.Count > _maxSize)
                 history.Dequeue();
         }
-
         public double GetPriceAverage() {
             return history.Select(x => x.Price).ToArray().Average();
         }

@@ -1,12 +1,12 @@
 {
   "MailConfig": {
-    "Receiver": "edgarsam220@gmail.com",
-    "Sender": "edgarteste2@gmail.com",
-    "SenderPassword": "05PCODex",
+    "Receiver": "Receiver@gmail.com",
+    "Sender": "Sender@gmail.com",
+    "SenderPassword": "123",
     "Host": "smtp.gmail.com",
     "Port": 587
   },
-  "DelayToRequest": 1,
+  "DelayToRequest": 15,
   "ReportConfig": {
     "CanSendReportEmail": true,
     "MaxQueueSize": 20

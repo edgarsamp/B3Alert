@@ -1,13 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace stock_quote_alert.ApiResults
-{
-    public class ApiStock
-    {
+﻿namespace stock_quote_alert.ApiResults {
+    public class ApiStock {
         public string symbol { get; set; }
         public string shortName { get; set; }
         public string longName { get; set; }

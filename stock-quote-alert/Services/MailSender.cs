@@ -8,7 +8,6 @@ using System.Text.RegularExpressions;
 namespace stock_quote_alert.Services {
     internal class MailSender {
         private readonly MailConfig _config;
-
         public MailSender(MailConfig config) {
             _config = config;
         }
@@ -37,8 +36,6 @@ namespace stock_quote_alert.Services {
                                                Encoding.UTF8,
                                                MediaTypeNames.Text.Html);
 
-
-
                     string mediaType = MediaTypeNames.Image.Jpeg;
                     LinkedResource img = new(imagePath, mediaType);
                     img.ContentId = "GraphStockPrice";
@@ -46,19 +43,18 @@ namespace stock_quote_alert.Services {
                     img.TransferEncoding = TransferEncoding.Base64;
                     img.ContentType.Name = img.ContentId;
                     img.ContentLink = new Uri("img:" + img.ContentId);
+
                     htmlView.LinkedResources.Add(img);
+
 
                     mail.AlternateViews.Add(htmlView);
                 }
-
 
                 SmtpClient client = new(_config.Host, _config.Port) {
                     UseDefaultCredentials = false,
                     Credentials = new NetworkCredential(_config.Sender, _config.SenderPassword),
                     EnableSsl = true
                 };
-
-                mail.Attachments.Clear();
 
                 await client.SendMailAsync(mail);
             } catch (Exception) {

@@ -1,6 +1,8 @@
-﻿using stock_quote_alert.Services;
+﻿using stock_quote_alert.Config;
+using stock_quote_alert.Services;
 
-StockQuoteAlert alert = new("./config.json", args);
+ConfigFile.LoadConfig("./config.json");
+StockQuoteAlert alert = new(args);
 
 CancellationTokenSource cancellationTokenSource = new();
 CancellationToken token = cancellationTokenSource.Token;
@@ -18,4 +20,4 @@ while (true) {
     }
 }
 
-alert.SendReportMail();
+await alert.SendReportMail();

@@ -1,68 +1,66 @@
 ﻿using stock_quote_alert.Config;
 using stock_quote_alert.Stocks;
 
-namespace stock_quote_alert.Services {
-    internal class StockQuoteAlert {
-        private readonly ConfigFile _configFile;
-        private readonly MailConfig _mailConfig;
-        private readonly ReportConfig _reportConfig;
-        private readonly MailSender _mailSenderService;
-        private readonly ApiConsumer _apiConsumerService;
-        private readonly MonitoredStock _monitoredStock;
-        private readonly TimeSpan _delayToRequest;
-        private readonly StockHistory _stockHistory;
-        public StockQuoteAlert(string path, string[] args) {
-            _configFile = new ConfigFile(path);
-            _apiConsumerService = new ApiConsumer();
-            _mailConfig = _configFile.LoadConfig().MailConfig;
-            _reportConfig = _configFile.LoadConfig().ReportConfig;
-            _stockHistory = new(_reportConfig.MaxQueueSize);
-            _delayToRequest = TimeSpan.FromMinutes(_configFile.LoadConfig().DelayToRequest);
-            _mailSenderService = new MailSender(_mailConfig);
-            _monitoredStock = new MonitoredStock(args);
-        }
+namespace stock_quote_alert.Services;
+public class StockQuoteAlert {
+    private readonly MailConfig _mailConfig;
+    private readonly ReportConfig _reportConfig;
+    private readonly MailSender _mailSenderService;
+    private readonly ApiConsumer _apiConsumerService;
+    private readonly MonitoredStock _monitoredStock;
+    private readonly TimeSpan _delayToRequest;
+    private readonly StockHistory _stockHistory;
+    public StockQuoteAlert(string[] args) {
+        if (args.Length != 3) throw new Exception("Parameters is not valid.");
 
-        private CurrentStock GetCurrentStock() {
-            return _apiConsumerService.GetCurrentStock(_monitoredStock);
-        }
-        private void RecommendToBuy(CurrentStock currentStock) {
-            var subject = $"Recommendation to sale of stock.";
-            var message = $"<p> Maybe it's a good time to buy the stock {currentStock.FullName}({currentStock.Name}), " +
-                          $"the market price is R$ {currentStock.Price}. </p>";
+        _apiConsumerService = new ApiConsumer();
+        _mailConfig = ConfigFile.Config.MailConfig;
+        _reportConfig = ConfigFile.Config.ReportConfig;
+        _stockHistory = new(_reportConfig.MaxQueueSize);
+        _delayToRequest = TimeSpan.FromMinutes(ConfigFile.Config.DelayToRequest);
+        _mailSenderService = new MailSender(_mailConfig);
+        _monitoredStock = new MonitoredStock(args);
+    }
 
-            _mailSenderService.SendAsync(subject, message).Wait();
-        }
-        private void RecommendToSell(CurrentStock currentStock) {
-            var subject = $"Recommendation to purchase of stock.";
-            var message = $"<p> Maybe it's a good time to sell the stock {currentStock.FullName}({currentStock.Name}), " +
-                          $"the market price is R$ {currentStock.Price}.</p>";
+    private async Task<CurrentStock> GetCurrentStock() => await _apiConsumerService.GetCurrentStock(_monitoredStock);
+    private async Task RecommendToBuy(CurrentStock currentStock) {
+        var subject = $"Recommendation to sale of stock.";
+        var message = $"<p> Maybe it's a good time to buy the stock {currentStock.FullName}({currentStock.Name}), " +
+                      $"the market price is R$ {currentStock.Price}. </p>";
 
-            _mailSenderService.SendAsync(subject, message).Wait();
-        }
+        await _mailSenderService.SendAsync(subject, message);
+    }
+    private async Task RecommendToSell(CurrentStock currentStock) {
+        var subject = $"Recommendation to purchase of stock.";
+        var message = $"<p> Maybe it's a good time to sell the stock {currentStock.FullName}({currentStock.Name}), " +
+                      $"the market price is R$ {currentStock.Price}.</p>";
 
-        public void SendReportMail() {
-            if (!_reportConfig.CanSendReportEmail)
-                return;
+        await _mailSenderService.SendAsync(subject, message);
+    }
 
-            ReportCreator creator = new();
-            var subject = $"Report about {_monitoredStock.Name} stock";
-            var message = creator.GenerateMessage(_stockHistory, _monitoredStock);
-            var imagePath = ReportCreator.GenerateAverageGraph(_stockHistory, _monitoredStock);
+    public async Task SendReportMail() {
+        if (!_reportConfig.CanSendReportEmail)
+            return;
 
-            _mailSenderService.SendWithImageAsync(subject, message, imagePath).Wait();
-        }
+        ReportCreator creator = new();
+        var subject = $"Report about {_monitoredStock.Name} stock";
+        var message = creator.GenerateMessage(_stockHistory, _monitoredStock);
+        var imagePath = ReportCreator.GenerateAverageGraph(_stockHistory, _monitoredStock);
 
-        public async Task Run(CancellationToken token) {
-            while (!token.IsCancellationRequested) {
-                var currentStock = GetCurrentStock();
-                _stockHistory.Add(currentStock);
-                if (currentStock.Price > _monitoredStock.BuyPrice)
-                    RecommendToSell(currentStock);
-                else if (currentStock.Price < _monitoredStock.SellPrice)
-                    RecommendToBuy(currentStock);
+        await _mailSenderService.SendWithImageAsync(subject, message, imagePath);
+    }
 
-                await Task.Delay(_delayToRequest, token);
-            }
+    public async Task Run(CancellationToken token) {
+        while (!token.IsCancellationRequested) {
+            var currentStock = await GetCurrentStock();
+            _stockHistory.Add(currentStock);
+            if (currentStock.Price > _monitoredStock.BuyPrice)
+                await RecommendToSell(currentStock);
+            else if (currentStock.Price < _monitoredStock.SellPrice)
+                await RecommendToBuy(currentStock);
+
+            await Task.Delay(_delayToRequest, token);
         }
     }
 }
+

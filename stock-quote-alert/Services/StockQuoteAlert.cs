@@ -25,14 +25,14 @@ public class StockQuoteAlert {
     private async Task<CurrentStock> GetCurrentStock() => await _apiConsumerService.GetCurrentStock(_monitoredStock);
     private async Task RecommendToBuy(CurrentStock currentStock) {
         var subject = $"Recommendation to sale of stock.";
-        var message = $"<p> Maybe it's a good time to buy the stock {currentStock.FullName}({currentStock.Name}), " +
+        var message = $"<p> Maybe it's a good time to buy the stock {currentStock.FullName} ({currentStock.Name}), " +
                       $"the market price is R$ {currentStock.Price}. </p>";
 
         await _mailSenderService.SendAsync(subject, message);
     }
     private async Task RecommendToSell(CurrentStock currentStock) {
         var subject = $"Recommendation to purchase of stock.";
-        var message = $"<p> Maybe it's a good time to sell the stock {currentStock.FullName}({currentStock.Name}), " +
+        var message = $"<p> Maybe it's a good time to sell the stock {currentStock.FullName} ({currentStock.Name}), " +
                       $"the market price is R$ {currentStock.Price}.</p>";
 
         await _mailSenderService.SendAsync(subject, message);

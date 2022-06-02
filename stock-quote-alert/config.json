@@ -1,14 +1,14 @@
 {
   "MailConfig": {
     "Receiver": "Receiver@gmail.com",
-    "Sender": "Sender@gmail.com",
+    "Sender": "Sender@hotmail.com",
     "SenderPassword": "123",
-    "Host": "smtp.gmail.com",
+    "Host": "smtp.office365.com",
     "Port": 587
   },
-  "DelayToRequest": 15,
+  "DelayToRequest": 1,
   "ReportConfig": {
     "CanSendReportEmail": true,
-    "MaxQueueSize": 20
+    "MaxQueueSize": 50
   }
 }

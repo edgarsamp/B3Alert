@@ -11,7 +11,7 @@ Task task = Task.Run(async () => {
     await alert.Run(token);
 }, token);
 
-Console.WriteLine("Press 'C' to stop the task");
+Console.WriteLine("Press 'C' to stop the stock quote alert");
 while (true) {
     var key = Console.ReadLine();
     if (key.ToUpperInvariant() == "C") {

@@ -11,8 +11,11 @@ public class MailSender {
         _config = config;
     }
     public async Task SendAsync(string subject, string message) {
+
         try {
-            MailMessage mail = new(_config.Sender, _config.Receiver, subject, message);
+            MailMessage mail = new(_config.Sender, _config.Receiver, subject, message) {
+                IsBodyHtml = true
+            };
 
             SmtpClient client = new(_config.Host, _config.Port) {
                 UseDefaultCredentials = false,
@@ -21,7 +24,7 @@ public class MailSender {
             };
             await client.SendMailAsync(mail);
         } catch (Exception) {
-            throw;
+            throw new("It was not possible to send the email.");
         }
     }
     public async Task SendWithImageAsync(string subject, string message, string imagePath) {
@@ -45,7 +48,6 @@ public class MailSender {
 
                 htmlView.LinkedResources.Add(img);
 
-
                 mail.AlternateViews.Add(htmlView);
             }
 
@@ -57,7 +59,7 @@ public class MailSender {
 
             await client.SendMailAsync(mail);
         } catch (Exception) {
-            throw;
+            throw new("It was not possible to send the email.");
         }
     }
 }
